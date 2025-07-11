@@ -3,6 +3,7 @@ import time
 import json
 import random
 
+
 HOST = 'localhost'
 PORT = 9999
 
@@ -45,7 +46,7 @@ def generate_anomaly_data():
             "duration_ms": random.randint(2000, 5000),
             "protocol": "TCP"
         }
-    else:  # unknown protocol
+    else:
         return {
             "src_port": 443,
             "dst_port": random.randint(1024, 65535),
@@ -54,8 +55,10 @@ def generate_anomaly_data():
             "protocol": "UNKNOWN"
         }
 
+
 def get_data():
     return generate_anomaly_data() if random.random() < 0.2 else generate_normal_data()
+
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((HOST, PORT))
@@ -65,10 +68,11 @@ print("Server running and waiting for client...")
 conn, addr = server.accept()
 print(f"Connected by {addr}")
 
+
 try:
     while True:
         data = get_data()
-        conn.sendall((json.dumps(data) + '\n').encode())
+        conn.sendall((json.dumps(data) + '\n').encode())  
         time.sleep(2)
 except KeyboardInterrupt:
     print("Server stopped.")
